@@ -1,8 +1,10 @@
 package com.kevin.music_streaming_app;
 
 import com.kevin.music_streaming_app.audio.AudioPlayer;
+import com.kevin.music_streaming_app.audio.PausablePlayer;
 import com.kevin.music_streaming_app.db.DB;
 
+import com.kevin.music_streaming_app.db.Song;
 import com.kevin.music_streaming_app.layout.Center;
 import com.kevin.music_streaming_app.layout.NavBar;
 import javafx.application.Application;
@@ -13,6 +15,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class App extends Application {
 
     private static Stage stage;
@@ -20,6 +25,8 @@ public class App extends Application {
     private static StackPane root;
     private NavBar navBar = new NavBar();
     private Center center = new Center();
+    private static List<AudioPlayer> players = new ArrayList<>();
+    private static PausablePlayer player;
 
     @Override
     public void start(Stage stage) {
@@ -49,9 +56,7 @@ public class App extends Application {
 
     public static void main(String[] args) {
         DB.main(); //runs the database
-        AudioPlayer audioPlayer = new AudioPlayer();
-        audioPlayer.start();
-        launch();
+        launch(); //runs GUI
     }
 
     public static Scene getScene() {
@@ -64,5 +69,17 @@ public class App extends Application {
 
     public static Stage getStage() {
         return stage;
+    }
+
+    public static List<AudioPlayer> getPlayers() {
+        return players;
+    }
+
+    public static PausablePlayer getPlayer() {
+        return player;
+    }
+
+    public static void setPlayer(PausablePlayer newPlayer) {
+        player = newPlayer;
     }
 }

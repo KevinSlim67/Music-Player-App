@@ -1,46 +1,61 @@
 package com.kevin.music_streaming_app.audio;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.InputStream;
+import java.sql.Blob;
 
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 
 public class AudioPlayer extends Thread {
-    private static String filePath;
-    private static String previousFilePath;
-    private static Player jlPlayer;
+    private Blob data;
+    private AdvancedPlayer jlPlayer;
+    private int pausedOnFrame = 0;
 
+    public AudioPlayer(Blob song) {
+        data = song;
+    }
 
     @Override
     public void run() {
-
+       play(data);
     }
 
-    public static void play(String newFilePath) {
-        previousFilePath = filePath;
-        filePath = newFilePath;
+    public void play(Blob song) {
+        data = song;
 
-        if (!filePath.equals(previousFilePath)) {
-            try {
-                FileInputStream fileInputStream = new FileInputStream(filePath);
-                BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
-                jlPlayer = new Player(bufferedInputStream);
-            } catch (Exception e) {
-                System.out.println("Problem playing mp3 file " + filePath);
-                System.out.println(e.getMessage());
-            }
+        try {
+            InputStream inputStream = data.getBinaryStream(); //makes blob data readable
+            //BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            jlPlayer = new AdvancedPlayer(inputStream);
+            jlPlayer.setPlayBackListener(new PlaybackListener() {
+                @Override
+                public void playbackFinished(PlaybackEvent event) {
+                    pausedOnFrame = event.getFrame();
+                }
+            });
+        } catch (Exception e) {
+            System.out.println("Problem playing mp3 file " + data);
+            System.out.println(e.getMessage());
+        }
 
-            try {
-                jlPlayer.play();
-            } catch (JavaLayerException e) {
-                e.printStackTrace();
-            }
+        try {
+            jlPlayer.play(pausedOnFrame, Integer.MAX_VALUE);
+        } catch (JavaLayerException e) {
+            e.printStackTrace();
         }
     }
 
-    public static void close() {
+
+    public void close() {
         if (jlPlayer != null) jlPlayer.close();
+    }
+
+
+    public void setSong(Blob song) {
+        data = song;
     }
 }
 

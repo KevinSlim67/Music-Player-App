@@ -1,8 +1,10 @@
 package com.kevin.music_streaming_app.component;
 
 import com.kevin.music_streaming_app.App;
+import com.kevin.music_streaming_app.audio.AudioPlayer;
+import com.kevin.music_streaming_app.audio.PausablePlayer;
+import com.kevin.music_streaming_app.db.Song;
 import com.kevin.music_streaming_app.sections.song_pane.SongPane;
-import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.SnapshotParameters;
@@ -15,13 +17,27 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Song extends VBox {
+import java.io.InputStream;
+import java.sql.SQLException;
+
+public class SongButton extends VBox {
 
     ImageView imageView;
+    Song song;
 
-    public Song() {
+    public SongButton(Song song) {
+        this.song = song;
+        InputStream songStream = null, coverStream = null;
+        this.setMaxWidth(100);
 
-        Image image = new Image("song_image.jpg");
+        try {
+            coverStream = song.getCover().getBinaryStream(); //makes blob data readable
+            songStream = song.getSong().getBinaryStream();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Image image = new Image(coverStream);
         imageView = new ImageView(image);
         imageView.setFitHeight(100);
         imageView.setFitWidth(100);
@@ -33,11 +49,12 @@ public class Song extends VBox {
         imageView.addEventFilter(MouseEvent.MOUSE_EXITED, e -> onLeave());
 
 
-        Label title = new Label("Song");
-        title.setStyle("-fx-font-size: 15px;");
+        Label title = new Label(song.getName());
+        title.setStyle("-fx-font-size: 12px; -fx-font-weight: bold");
+        title.setWrapText(true);
 
-        Label author = new Label("Author");
-        author.setStyle("-fx-font-size: 12px");
+        Label author = new Label(song.getUser());
+        author.setStyle("-fx-font-size: 10px");
 
         VBox.setMargin(title, new Insets(5, 0, 0, 0));
         VBox.setMargin(author, new Insets(2, 0, 0, 0));
@@ -48,17 +65,19 @@ public class Song extends VBox {
     private void onClick() {
         SongPane pane = new SongPane();
         App.getRoot().getChildren().add(pane);
+        App.setPlayer(new PausablePlayer(song.getSong()));
+        App.getPlayer().play();
     }
 
     private void onEnter() {
-        imageView.setFitHeight(102);
-        imageView.setFitWidth(102);
+        imageView.setScaleX(1.02);
+        imageView.setScaleY(1.02);
         App.getScene().setCursor(Cursor.HAND);
     }
 
     private void onLeave() {
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+        imageView.setScaleX(1);
+        imageView.setScaleY(1);
         App.getScene().setCursor(Cursor.DEFAULT);
     }
 

@@ -1,21 +1,49 @@
 package com.kevin.music_streaming_app.db;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kevin.music_streaming_app.db.DB.connection;
+
 
 public class User {
-    public User() {
+    String name;
+    int id;
 
+    public User(String name) {
+        this.name = name;
+    }
+
+    public User(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    public static User searchUserById(int id) {
+        try {
+            Statement s = DB.getConnection().createStatement();
+            String query = "SELECT * FROM User WHERE username = 'Daft Punk'";
+            ResultSet rs = s.executeQuery(query);
+
+            String username;
+            int userId;
+
+            while (rs.next()) {
+                username = rs.getString("username");
+                userId = rs.getInt("id");
+                return new User(username, userId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static List<String> returnAll() {
         List<String> list = new ArrayList<String>();
-        Statement statement = DB.createStatement(connection);
+        Statement statement = DB.createStatement(DB.getConnection());
 
         try {
             String query = "SELECT * FROM User";
@@ -32,5 +60,13 @@ public class User {
         }
 
         return list;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
     }
 }
