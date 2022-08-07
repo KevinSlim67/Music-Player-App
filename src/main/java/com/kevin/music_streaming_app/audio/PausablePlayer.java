@@ -1,14 +1,12 @@
 package com.kevin.music_streaming_app.audio;
 
+import com.kevin.music_streaming_app.AppStage;
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
 
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
-
-import static jdk.internal.net.http.common.Utils.close;
 
 public class PausablePlayer {
 
@@ -16,6 +14,9 @@ public class PausablePlayer {
     private final static int PLAYING = 1;
     private final static int PAUSED = 2;
     private final static int FINISHED = 3;
+
+    // keeps track of which frame the song is on
+    private int pausedOnFrame = 1000;
 
     // the player actually doing all the work
     private Player player = null;
@@ -27,20 +28,14 @@ public class PausablePlayer {
     private int playerStatus = NOTSTARTED;
 
     public PausablePlayer(final Blob song) {
+        AppStage.getThreads().forEach(t -> t.stop());
+        AppStage.getThreads().clear();
         InputStream inputStream = null;
         try {
             inputStream = song.getBinaryStream();
             this.player = new Player(inputStream);
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (JavaLayerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public PausablePlayer(final InputStream inputStream, final AudioDevice audioDevice) {
-        try {
-            this.player = new Player(inputStream, audioDevice);
         } catch (JavaLayerException e) {
             e.printStackTrace();
         }
@@ -53,15 +48,19 @@ public class PausablePlayer {
         synchronized (playerLock) {
             switch (playerStatus) {
                 case NOTSTARTED:
-                    final Runnable r = new Runnable() {
-                        public void run() {
-                            playInternal();
-                        }
-                    };
+                    final Runnable r = () -> playInternal();
                     final Thread t = new Thread(r);
                     t.setDaemon(true);
                     t.setPriority(Thread.MAX_PRIORITY);
                     playerStatus = PLAYING;
+                    AppStage.getThreads().add(t);
+
+                    try {
+                        Thread.sleep(500); //to add a little delay between switching songs
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     t.start();
                     break;
                 case PAUSED:
@@ -129,6 +128,15 @@ public class PausablePlayer {
                 }
             }
         }
-        close();
+        player.close();
+    }
+
+
+    public int getPausedOnFrame() {
+        return pausedOnFrame;
+    }
+
+    public void setPausedOnFrame(int pausedOnFrame) {
+        this.pausedOnFrame = pausedOnFrame;
     }
 }

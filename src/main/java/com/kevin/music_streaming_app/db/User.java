@@ -1,14 +1,15 @@
 package com.kevin.music_streaming_app.db;
 
+import java.io.FileInputStream;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class User {
-    String name;
+    String name, password;
     int id;
 
     public User(String name) {
@@ -18,6 +19,26 @@ public class User {
     public User(String name, int id) {
         this.name = name;
         this.id = id;
+    }
+
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
+    public void insert() {
+        try {
+            String query = "INSERT INTO User (username, password)" +
+                    " VALUES (?, ?)";
+
+            PreparedStatement preparedStmt = DB.getConnection().prepareStatement(query);
+            preparedStmt.setString(1, name);
+            preparedStmt.setString(2, password);
+            preparedStmt.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static User searchUserById(int id) {
@@ -60,6 +81,32 @@ public class User {
         }
 
         return list;
+    }
+
+    public static Object[] verifyLogin(String username, String password) {
+        Statement statement = DB.createStatement(DB.getConnection());
+
+        try {
+            String query = "SELECT * FROM User";
+            ResultSet rs = statement.executeQuery(query);
+            String currentName, currentPassword;
+            int id;
+
+            while (rs.next()) {
+                currentName = rs.getString("username");
+                currentPassword = rs.getString("password");
+                if (currentName.equals(username) && currentPassword.equals(password)) {
+                    id = rs.getInt("id");
+                    Object[] arr = {true, new User(username, id)};
+                    return arr;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Object[] arr = {false};
+        return arr;
     }
 
     public String getName() {

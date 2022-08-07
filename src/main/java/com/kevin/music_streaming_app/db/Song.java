@@ -1,6 +1,6 @@
 package com.kevin.music_streaming_app.db;
 
-import com.kevin.music_streaming_app.App;
+import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.audio.AudioPlayer;
 
 import java.io.File;
@@ -121,27 +121,12 @@ public class Song {
         return songs;
     }
 
-    public static void play(Blob song) {
-        App.getPlayers().forEach((t) -> t.stop());
-        App.getPlayers().clear();
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        player = new AudioPlayer(song);
-        App.getPlayers().add(player);
-        player.start();
-    }
-
     public static void pause() {
-        App.getPlayer().pause();
+        AppStage.getPlayer().pause();
     }
 
     public static void resume() {
-        App.getPlayer().resume();
+        AppStage.getPlayer().resume();
     }
 
     public String getName() {

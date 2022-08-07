@@ -36,6 +36,7 @@ public class AudioPlayer extends Thread {
                     pausedOnFrame = event.getFrame();
                 }
             });
+
         } catch (Exception e) {
             System.out.println("Problem playing mp3 file " + data);
             System.out.println(e.getMessage());

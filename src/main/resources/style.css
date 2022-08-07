@@ -1,3 +1,54 @@
-Label, Text {
+.label  {
+    -fx-text-fill : white;
+}
 
+
+.choice-box {
+    -fx-background-color: transparent;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: #01031aEE;
+    -fx-border-color: white;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: orange;
+    -fx-background-radius: 5px;
+}
+
+.text-field {
+    -fx-background-color: #020631;
+    -fx-background-radius: 2px;
+    -fx-border-radius: 2px;
+    -fx-text-fill: white;
+}
+
+.sidebar .button, .navbar .button:hover {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.sidebar .button:hover, .navbar .button:hover {
+    -fx-underline: true;
+    -fx-text-fill: orange;
+}
+
+.login .text-field {
+    -fx-height: 30px;
+    -fx-font-size: 18px;
+    -fx-background-color: #0e1030;
+    -fx-text-fill: white;
+}
+
+.login .button {
+    -fx-background-color: darkorange;
+    -fx-text-fill: white;
+}
+
+.login .label:hover {
+    -fx-underline: true;
+    -fx-text-fill: orange;
 }
