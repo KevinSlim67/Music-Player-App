@@ -1,5 +1,6 @@
 package com.kevin.music_streaming_app.main_frame.sections.song_pane;
 
+import com.kevin.music_streaming_app.db.Song;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -12,7 +13,7 @@ public class SongPane extends StackPane {
     private SongPaneTop songPaneTop;
     private StackPane pane;
 
-    public SongPane(Blob song) {
+    public SongPane(Song song) {
         this.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3)");
 
         pane = new StackPane();
@@ -26,8 +27,8 @@ public class SongPane extends StackPane {
 
         BorderPane borderPane = new BorderPane();
 
-        songPaneCenter = new SongPaneCenter(song);
-        songPaneBottom = new SongPaneBottom();
+        songPaneCenter = new SongPaneCenter(song.getCover());
+        songPaneBottom = new SongPaneBottom(song.getName(), song.getUser());
         songPaneTop = new SongPaneTop();
 
         borderPane.setCenter(songPaneCenter);

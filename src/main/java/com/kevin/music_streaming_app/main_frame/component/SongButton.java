@@ -52,18 +52,18 @@ public class SongButton extends VBox {
         title.setWrapText(true);
         title.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> onClick());
 
-        Label author = new Label(song.getUser());
-        author.setStyle("-fx-font-size: 10px");
+        Label artist = new Label(song.getUser());
+        artist.setStyle("-fx-font-size: 10px");
 
         VBox.setMargin(title, new Insets(5, 0, 0, 0));
-        VBox.setMargin(author, new Insets(2, 0, 0, 0));
+        VBox.setMargin(artist, new Insets(2, 0, 0, 0));
 
-        this.getChildren().addAll(imageView, title, author);
+        this.getChildren().addAll(imageView, title, artist);
     }
 
     //creates Song Pane and plays the required song
     private void onClick() {
-        SongPane pane = new SongPane(song.getCover());
+        SongPane pane = new SongPane(song);
         AppStage.getRoot().getChildren().add(pane);
         AppStage.setPlayer(new PausablePlayer(song.getSong()));
         AppStage.getPlayer().play();

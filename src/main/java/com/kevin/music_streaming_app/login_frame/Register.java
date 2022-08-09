@@ -18,6 +18,7 @@ public class Register extends VBox {
     TextField username = new TextField();;
     PasswordField password = new PasswordField();
     Label errorLabel = new Label("Username already taken!");
+    Label successLabel = new Label("Account successfully created!");
 
     public Register() {
         this.setSpacing(20);
@@ -29,6 +30,10 @@ public class Register extends VBox {
         errorLabel.setStyle("-fx-text-fill: red");
         errorLabel.setVisible(false);
         errorLabel.setManaged(false);
+
+        successLabel.setStyle("-fx-text-fill: green");
+        successLabel.setVisible(false);
+        successLabel.setManaged(false);
 
         Button register = new Button("Sign Up");
         register.setPadding(new Insets(5, 10, 5, 10));
@@ -48,7 +53,7 @@ public class Register extends VBox {
         group.setPrefWidth(this.getWidth());
         group.setAlignment(Pos.CENTER);
         login.getStyleClass().add("switch");
-        group.getChildren().addAll(login, errorLabel, register);
+        group.getChildren().addAll(login, errorLabel, successLabel, register);
 
         this.getChildren().addAll(username, password, group);
     }
@@ -72,6 +77,9 @@ public class Register extends VBox {
                     }
                 }, 3000);
             }
-        };
+        } else {
+            successLabel.setVisible(true);
+            successLabel.setManaged(true);
+        }
     }
 }

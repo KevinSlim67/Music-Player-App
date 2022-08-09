@@ -2,7 +2,7 @@ package com.kevin.music_streaming_app.main_frame.layout;
 
 import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.db.User;
-import com.kevin.music_streaming_app.main_frame.sections.upload_pane.HomePane;
+import com.kevin.music_streaming_app.main_frame.sections.HomePane;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;

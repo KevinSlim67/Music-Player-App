@@ -1,12 +1,10 @@
 package com.kevin.music_streaming_app.db;
 
 import com.kevin.music_streaming_app.AppStage;
-import com.kevin.music_streaming_app.audio.AudioPlayer;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +36,8 @@ public class Song {
             String query = "INSERT INTO Song (user_id, song_name, song, song_cover, genre, release_date)" +
                     " VALUES (?, ?, ?, ?, ?, ?)";
 
-            String newSongFile = songFile.toString().replace("file:\\", "");
-            String newCoverFile = songCoverFile.toString().replace("file:\\", "");
-
-            FileInputStream songStream = new FileInputStream(newSongFile);
-            FileInputStream songImage = new FileInputStream(newCoverFile);
+            FileInputStream songStream = new FileInputStream(songFile);
+            FileInputStream songImage = new FileInputStream(songCoverFile);
 
             int id = searchUserId();
 
@@ -69,7 +64,7 @@ public class Song {
     public int searchUserId() {
         try {
             Statement s = DB.getConnection().createStatement();
-            String query = "SELECT * FROM User WHERE username = 'Daft Punk'";
+            String query = "SELECT * FROM User WHERE username = '" + this.user + "'";
             ResultSet rs = s.executeQuery(query);
 
             while (rs.next()) {
@@ -133,6 +128,34 @@ public class Song {
         try {
             Statement s = DB.getConnection().createStatement();
             String query = "SELECT * FROM Song JOIN LikedSong ON Song.id = LikedSong.song_id WHERE LikedSong.user_id = '" + usId + "'";
+
+            ResultSet rs = s.executeQuery(query);
+            int userId;
+            String songName, genre;
+            Blob song, songCover;
+
+            while (rs.next() && count++ < limit) {
+                songName = rs.getString("song_name");
+                genre = rs.getString("genre");
+                userId = rs.getInt("user_id");
+                song = rs.getBlob("song");
+                songCover = rs.getBlob("song_cover");
+                songs.add(new Song(songName, userId, song, songCover, genre));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return songs;
+    }
+
+    public static List<Song> returnUserSongs(int usId, int limit) {
+        List<Song> songs = new ArrayList<Song>();
+        int count = 0;
+
+        try {
+            Statement s = DB.getConnection().createStatement();
+            String query = "SELECT * FROM Song WHERE user_id = '" + usId + "'";
 
             ResultSet rs = s.executeQuery(query);
             int userId;

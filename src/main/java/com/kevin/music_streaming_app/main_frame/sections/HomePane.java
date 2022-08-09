@@ -1,4 +1,4 @@
-package com.kevin.music_streaming_app.main_frame.sections.upload_pane;
+package com.kevin.music_streaming_app.main_frame.sections;
 
 import com.kevin.music_streaming_app.db.Song;
 import com.kevin.music_streaming_app.db.User;

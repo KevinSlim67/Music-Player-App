@@ -2,14 +2,13 @@ package com.kevin.music_streaming_app.main_frame.layout;
 
 import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.db.User;
-import com.kevin.music_streaming_app.main_frame.sections.upload_pane.HomePane;
-import com.kevin.music_streaming_app.main_frame.sections.upload_pane.UploadPane;
+import com.kevin.music_streaming_app.main_frame.sections.HomePane;
+import com.kevin.music_streaming_app.main_frame.sections.MySongsPane;
+import com.kevin.music_streaming_app.main_frame.sections.UploadPane;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-
-import java.util.Arrays;
 
 public class SideBar extends VBox {
 
@@ -38,6 +37,8 @@ public class SideBar extends VBox {
                 buttons[i].setOnAction(e -> clickHome());
             } else if (buttons[i].getText().equals("Upload Song"))
                 buttons[i].setOnAction(e -> clickUpload());
+            else if (buttons[i].getText().equals("My Songs"))
+                buttons[i].setOnAction(e -> clickMySongs());
 
             this.getChildren().add(buttons[i]);
         }
@@ -57,6 +58,12 @@ public class SideBar extends VBox {
         clearCenter();
         setCenter(new UploadPane(user));
         paintButton("Upload Song");
+    }
+
+    private void clickMySongs() {
+        clearCenter();
+        setCenter(new MySongsPane(user));
+        paintButton("My Songs");
     }
 
 

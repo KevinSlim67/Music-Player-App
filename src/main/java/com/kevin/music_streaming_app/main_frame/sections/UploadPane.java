@@ -1,4 +1,4 @@
-package com.kevin.music_streaming_app.main_frame.sections.upload_pane;
+package com.kevin.music_streaming_app.main_frame.sections;
 
 import com.kevin.music_streaming_app.StageManager;
 import com.kevin.music_streaming_app.db.Song;
@@ -40,10 +40,14 @@ public class UploadPane extends HBox {
     private void createRight() {
         VBox vBox = new VBox(20);
 
+        songChosen = new Label("");
+        songChosen.setVisible(false);
+        songChosen.setManaged(false);
+
         songChooser = new FileChooser();
         songChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("MP3 Files", "*.mp3")
-                ,new FileChooser.ExtensionFilter("WAV Files", "*.wav")
+                , new FileChooser.ExtensionFilter("WAV Files", "*.wav")
         );
 
         songName = new TextField();
@@ -76,7 +80,7 @@ public class UploadPane extends HBox {
         imageChooser = new FileChooser();
         imageChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("PNG Files", "*.png")
-                ,new FileChooser.ExtensionFilter("JPG Files", "*.jpg")
+                , new FileChooser.ExtensionFilter("JPG Files", "*.jpg")
         );
 
         imagePane = new StackPane();
@@ -94,7 +98,8 @@ public class UploadPane extends HBox {
 
     private void selectImage() {
         String imagePath = imageChooser.showOpenDialog(StageManager.getStage()).toURI().toString();
-        this.selectedImage = new File(imagePath);
+        this.selectedImage = new File(imagePath.replace("%20", " ")
+                .replace("file:/", ""));
 
         Image image = new Image(imagePath);
         ImageView imageView = new ImageView(image);
@@ -104,9 +109,15 @@ public class UploadPane extends HBox {
     }
 
     private void selectSong() {
-        selectedSong = songChooser.showOpenDialog(StageManager.getStage());
-        this.selectedSong = new File(selectedSong.toURI().toString());
-        songChosen.setText(selectedSong.toURI().toString());
+        String songPath = songChooser.showOpenDialog(StageManager.getStage())
+                .toURI().toString().replace("file:/", "")
+                .replace("%20", " ");
+        this.selectedSong = new File(songPath);
+        songChosen.setText(songPath);
+
+        songChosen.setVisible(true);
+        songChosen.setManaged(true);
+
     }
 
     private void addSong() {
@@ -115,8 +126,6 @@ public class UploadPane extends HBox {
         String genre = (String) this.genre.getSelectionModel().getSelectedItem();
 
         Song song = new Song(name, user, selectedSong, selectedImage, genre);
-        System.out.println(selectedSong);
-        System.out.println(selectedImage);
         song.insert();
     }
 }

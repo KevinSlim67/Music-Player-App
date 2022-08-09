@@ -47,7 +47,7 @@ public class User {
     public static User searchUserById(int id) {
         try {
             Statement s = DB.getConnection().createStatement();
-            String query = "SELECT * FROM User WHERE username = 'Daft Punk'";
+            String query = "SELECT * FROM User WHERE id = " + id;
             ResultSet rs = s.executeQuery(query);
 
             String username;

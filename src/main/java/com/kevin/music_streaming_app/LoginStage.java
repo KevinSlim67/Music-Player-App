@@ -16,7 +16,7 @@ public class LoginStage extends Stage {
         root = new StackPane();
         root.getStyleClass().add("login");
 
-        root.setStyle("-fx-background-color: #00010D;");
+        root.setStyle("-fx-background-color: #010211;");
         root.setPadding(new Insets(50, 100, 50, 100));
 
         mainPane = new Login();

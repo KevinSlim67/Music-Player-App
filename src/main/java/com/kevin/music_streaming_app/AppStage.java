@@ -29,7 +29,7 @@ public class AppStage extends Stage {
     public AppStage(User user) {
         this.user = user;
         root = new StackPane();
-        root.setStyle("-fx-background-color: #00010D;");
+        root.setStyle("-fx-background-color: #010211;");
 
         navBar = new NavBar(user);
         center = new Center();
@@ -54,7 +54,7 @@ public class AppStage extends Stage {
 
         root.getChildren().add(borderPane);
 
-        scene = new Scene(root, 750, 600);
+        scene = new Scene(root, 770, 620);
         scene.getStylesheets().add("style.css");
         this.setScene(scene);
         this.show();

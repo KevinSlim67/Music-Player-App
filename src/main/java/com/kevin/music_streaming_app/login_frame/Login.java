@@ -13,17 +13,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Login extends VBox {
-    TextField username = new TextField();
-    ;
-    PasswordField password = new PasswordField();
-    Label errorLabel = new Label("Invalid credentials!");
-    VBox group;
+    private TextField username = new TextField();
+    private PasswordField password = new PasswordField();
+    private Label errorLabel = new Label("Invalid credentials!");
+    private VBox group;
 
     public Login() {
         this.setSpacing(20);
