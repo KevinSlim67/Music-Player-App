@@ -13,9 +13,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Login extends VBox {
-    TextField username = new TextField();;
+    TextField username = new TextField();
+    ;
     PasswordField password = new PasswordField();
+    Label errorLabel = new Label("Invalid credentials!");
+    VBox group;
 
     public Login() {
         this.setSpacing(20);
@@ -24,7 +32,11 @@ public class Login extends VBox {
         username.setPromptText("Username");
         password.setPromptText("Password");
 
-        Button login = new Button("Login");
+        errorLabel.setStyle("-fx-text-fill: red");
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
+
+        Button login = new Button("Sign In");
         login.setPadding(new Insets(5, 10, 5, 10));
         login.setStyle("-fx-font-size: 14px;");
         login.setOnAction(e -> loginClick());
@@ -37,10 +49,11 @@ public class Login extends VBox {
             LoginStage.getRoot().getChildren().add(LoginStage.getMainPane());
         });
 
-        VBox group = new VBox(12);
+        group = new VBox(12);
         group.setPrefWidth(this.getWidth());
         group.setAlignment(Pos.CENTER);
-        group.getChildren().addAll(register, login);
+        register.getStyleClass().add("switch");
+        group.getChildren().addAll(register, errorLabel, login);
 
         this.getChildren().addAll(username, password, group);
     }
@@ -55,6 +68,20 @@ public class Login extends VBox {
             User user = (User) object[1];
             StageManager.getStage().close();
             StageManager.setStage(new AppStage(user));
+        } else {
+            //if there is no error message, create the error message, and then remove after 3 seconds
+            if (!errorLabel.isVisible()) {
+                errorLabel.setVisible(true);
+                errorLabel.setManaged(true);
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        errorLabel.setVisible(false);
+                        errorLabel.setManaged(false);
+                    }
+                }, 3000);
+            }
         }
     }
 }

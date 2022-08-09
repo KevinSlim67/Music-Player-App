@@ -1,4 +1,4 @@
-package com.kevin.music_streaming_app.main_frame.sections;
+package com.kevin.music_streaming_app.main_frame.component;
 
 import com.kevin.music_streaming_app.main_frame.component.SongButton;
 import com.kevin.music_streaming_app.db.Song;
@@ -11,15 +11,15 @@ import javafx.scene.text.FontWeight;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewReleases extends VBox {
+public class SongList extends VBox {
     List<Song> songs = new ArrayList<Song>();
 
-    public NewReleases() {
+    public SongList(String t, List<Song> s) {
         this.setSpacing(12);
         this.setStyle("-fx-background-color: transparent;");
-        songs.addAll(Song.returnAll("newest"));
+        songs.addAll(s);
 
-        Label title = new Label("Latest Songs");
+        Label title = new Label(t);
 
         Font font = Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, 16);
         title.setFont(font);

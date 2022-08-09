@@ -13,13 +13,14 @@ public class NavBar extends BorderPane {
     public NavBar(User user) {
         this.getStyleClass().add("navbar");
         this.setStyle("-fx-background-color: transparent;");
-        BorderPane.setMargin(this, new Insets(10));
+        this.setPadding(new Insets(0, 20, 0, 20));
 
         SearchBar searchBar = new SearchBar();
 
         ChoiceBox userName = new ChoiceBox(FXCollections.observableArrayList("Logout"));
         userName.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
         userName.setValue(user.getName());
+
 
         userName.setOnAction(e -> {
             if (userName.getSelectionModel().isSelected(0)) {

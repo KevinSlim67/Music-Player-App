@@ -1,22 +1,32 @@
 package com.kevin.music_streaming_app.main_frame.layout;
 
-import com.kevin.music_streaming_app.audio.AudioPlayer;
-import com.kevin.music_streaming_app.main_frame.sections.NewReleases;
+import com.kevin.music_streaming_app.AppStage;
+import com.kevin.music_streaming_app.db.User;
+import com.kevin.music_streaming_app.main_frame.sections.upload_pane.HomePane;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class Center extends VBox {
-    private static Thread thread;
-    private static AudioPlayer player;
+
+    private Pane pane;
 
     public Center() {
-        this.setSpacing(20);
+        this.setPadding(new Insets(20));
         this.setStyle("-fx-background-color: transparent");
 
-        NewReleases latestSongs = new NewReleases();
-        NewReleases latestSongs1 = new NewReleases();
-        NewReleases latestSongs2 = new NewReleases();
+        User user = AppStage.getUser();
+        pane = new HomePane(user);
+        this.getChildren().add(pane);
 
-        this.getChildren().addAll(latestSongs, latestSongs1, latestSongs2);
+    }
 
+    public Pane getPane() {
+        return pane;
+    }
+
+    public void setPane(Pane pane) {
+        this.pane = pane;
+        this.getChildren().add(pane);
     }
 }

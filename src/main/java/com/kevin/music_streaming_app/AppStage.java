@@ -16,19 +16,24 @@ import java.util.List;
 
 public class AppStage extends Stage {
 
-    private NavBar navBar;
-    private Center center = new Center();
-    private SideBar sideBar = new SideBar();
+    private static NavBar navBar;
+    private static Center center;
+    private static SideBar sideBar;
 
-    private static StackPane root = new StackPane();
+    private static StackPane root;
     private static Scene scene;
     private static List<Thread> threads = new ArrayList<>();
     private static PausablePlayer player;
+    private static User user;
 
     public AppStage(User user) {
+        this.user = user;
+        root = new StackPane();
         root.setStyle("-fx-background-color: #00010D;");
 
         navBar = new NavBar(user);
+        center = new Center();
+        sideBar = new SideBar();
 
         BorderPane borderPane = new BorderPane();
         borderPane.setStyle("-fx-background-color: transparent;");
@@ -36,19 +41,18 @@ public class AppStage extends Stage {
         borderPane.setPrefHeight(this.getHeight());
 
         BorderPane.setMargin(navBar, new Insets(10, 10, 10, 10));
-        BorderPane.setMargin(center, new Insets(20, 10, 0, 10));
         BorderPane.setMargin(sideBar, new Insets(20, 10, 20, 0));
 
-
-        borderPane.setTop(navBar);
-        borderPane.setCenter(center);
-        borderPane.setLeft(sideBar);
-
-        ScrollPane scrollPane = new ScrollPane(borderPane);
+        ScrollPane scrollPane = new ScrollPane(center);
         scrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;"); //removes border
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        root.getChildren().add(scrollPane);
+
+        borderPane.setTop(navBar);
+        borderPane.setCenter(scrollPane);
+        borderPane.setLeft(sideBar);
+
+        root.getChildren().add(borderPane);
 
         scene = new Scene(root, 750, 600);
         scene.getStylesheets().add("style.css");
@@ -74,5 +78,13 @@ public class AppStage extends Stage {
 
     public static Scene returnScene() {
         return scene;
+    }
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static Center getCenter() {
+        return center;
     }
 }

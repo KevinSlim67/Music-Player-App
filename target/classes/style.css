@@ -38,7 +38,7 @@
 
 .login .text-field {
     -fx-height: 30px;
-    -fx-font-size: 18px;
+    -fx-font-size: 17px;
     -fx-background-color: #0e1030;
     -fx-text-fill: white;
 }
@@ -48,7 +48,31 @@
     -fx-text-fill: white;
 }
 
-.login .label:hover {
+.login .button:hover {
+    -fx-background-color: orange;
+}
+
+.login .switch:hover {
     -fx-underline: true;
     -fx-text-fill: orange;
+}
+
+.upload-pane .label {
+    -fx-font-size: 14px;
+}
+
+.upload-pane .text-field, .upload-pane .choice-box {
+    -fx-background-color: #0e1030;
+    -fx-font-size: 14px;
+    -fx-height: 25px;
+}
+
+.upload-pane .button {
+    -fx-background-color: darkorange;
+    -fx-text-fill: white;
+    -fx-padding: 5 10 5 10;
+}
+
+.upload-pane .button:hover {
+    -fx-background-color: orange;
 }

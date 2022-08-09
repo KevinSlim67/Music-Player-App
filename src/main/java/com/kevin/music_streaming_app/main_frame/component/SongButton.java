@@ -26,12 +26,11 @@ public class SongButton extends VBox {
 
     public SongButton(Song song) {
         this.song = song;
-        InputStream songStream = null, coverStream = null;
+        InputStream coverStream = null;
         this.setMaxWidth(100);
 
         try {
             coverStream = song.getCover().getBinaryStream(); //makes blob data readable
-            songStream = song.getSong().getBinaryStream();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,6 +50,7 @@ public class SongButton extends VBox {
         Label title = new Label(song.getName());
         title.setStyle("-fx-font-size: 12px; -fx-font-weight: bold");
         title.setWrapText(true);
+        title.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> onClick());
 
         Label author = new Label(song.getUser());
         author.setStyle("-fx-font-size: 10px");
@@ -61,6 +61,7 @@ public class SongButton extends VBox {
         this.getChildren().addAll(imageView, title, author);
     }
 
+    //creates Song Pane and plays the required song
     private void onClick() {
         SongPane pane = new SongPane(song.getCover());
         AppStage.getRoot().getChildren().add(pane);

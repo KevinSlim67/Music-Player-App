@@ -37,5 +37,6 @@
     <orderEntry type="library" name="mlibwrapper_jai" level="project" />
     <orderEntry type="library" name="jd-gui-windows-1.6.6" level="project" />
     <orderEntry type="library" name="jlayer-1.0.1" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-8.0.29" level="project" />
   </component>
 </module>

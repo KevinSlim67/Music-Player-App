@@ -3,6 +3,7 @@ package com.kevin.music_streaming_app.db;
 import java.io.FileInputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class User {
         this.password = password;
     }
 
-    public void insert() {
+    public boolean insert() {
         try {
             String query = "INSERT INTO User (username, password)" +
                     " VALUES (?, ?)";
@@ -35,10 +36,12 @@ public class User {
             preparedStmt.setString(1, name);
             preparedStmt.setString(2, password);
             preparedStmt.execute();
+            return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public static User searchUserById(int id) {

@@ -11,7 +11,8 @@ import javafx.scene.layout.HBox;
 
 public class SongPaneBottom extends BorderPane {
     ImageView playBtnView;
-    boolean isPlay = true;
+    boolean isPlay = true, isLiked = false;
+    Button likedBtn;
 
     public SongPaneBottom() {
         this.setPrefHeight(60);
@@ -19,6 +20,7 @@ public class SongPaneBottom extends BorderPane {
 
         HBox leftPane = new HBox(10);
         HBox rightPane = new HBox(10);
+        rightPane.setAlignment(Pos.CENTER);
 
         HBox topPane = new HBox(10);
         topPane.setAlignment(Pos.CENTER);
@@ -30,12 +32,20 @@ public class SongPaneBottom extends BorderPane {
         leftPane.getChildren().addAll(pauseBtn, playBtn);
 
 
-
 //        ProgressionSlider progressionSlider = new ProgressionSlider();
 //        topPane.getChildren().add(progressionSlider);
 
         SoundSlider soundSlider = new SoundSlider();
-        rightPane.getChildren().add(soundSlider);
+        Image likedImg = new Image("file:assets/icons/liked.png");
+        ImageView likedImgView = new ImageView(likedImg);
+        likedImgView.setFitWidth(25);
+        likedImgView.setFitHeight(25);
+        likedBtn = new Button();
+        likedBtn.setStyle("-fx-background-color: transparent;");
+        likedBtn.setGraphic(likedImgView);
+        likedBtn.setOnAction(e -> likedBtnClick());
+
+        rightPane.getChildren().addAll(soundSlider, likedBtn);
 
         this.setTop(topPane);
         this.setRight(rightPane);
@@ -50,5 +60,19 @@ public class SongPaneBottom extends BorderPane {
             playBtnView.setImage(new Image("file:assets/icons/stop_btn.png"));
         }
         isPlay = !isPlay;
+    }
+
+    private void likedBtnClick() {
+        Image image = null;
+        ImageView imageView = null;
+        if (!isLiked) image = new Image("file:assets/icons/liked_clicked.png");
+        else image = new Image("file:assets/icons/liked.png");
+
+
+        isLiked = !isLiked;
+        imageView = new ImageView(image);
+        imageView.setFitWidth(25);
+        imageView.setFitHeight(25);
+        likedBtn.setGraphic(imageView);
     }
 }
