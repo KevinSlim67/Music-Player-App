@@ -1,4 +1,4 @@
-package com.kevin.music_streaming_app.main_frame.component;
+package com.kevin.music_streaming_app.main_frame.component.buttons;
 
 import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.audio.PausablePlayer;
@@ -21,8 +21,8 @@ import java.sql.SQLException;
 
 public class SongButton extends VBox {
 
-    ImageView imageView;
-    Song song;
+    private ImageView imageView;
+    private Song song;
 
     public SongButton(Song song) {
         this.song = song;

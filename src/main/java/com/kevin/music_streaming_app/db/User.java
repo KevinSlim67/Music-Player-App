@@ -65,6 +65,27 @@ public class User {
         return null;
     }
 
+    public static User searchUserByName(String name) {
+        try {
+            Statement s = DB.getConnection().createStatement();
+            String query = "SELECT * FROM User WHERE username = '" + name + "'";
+            ResultSet rs = s.executeQuery(query);
+
+            String username;
+            int userId;
+
+            while (rs.next()) {
+                username = rs.getString("username");
+                userId = rs.getInt("id");
+                return new User(username, userId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static List<String> returnAll() {
         List<String> list = new ArrayList<String>();
         Statement statement = DB.createStatement(DB.getConnection());

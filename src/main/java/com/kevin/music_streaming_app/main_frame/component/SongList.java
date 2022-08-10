@@ -1,6 +1,6 @@
 package com.kevin.music_streaming_app.main_frame.component;
 
-import com.kevin.music_streaming_app.main_frame.component.SongButton;
+import com.kevin.music_streaming_app.main_frame.component.buttons.SongButton;
 import com.kevin.music_streaming_app.db.Song;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -15,6 +15,13 @@ public class SongList extends VBox {
     List<Song> songs = new ArrayList<Song>();
 
     public SongList(String t, List<Song> s) {
+
+        //the component isn't show if the list is empty
+        if (s.isEmpty()) {
+            this.setManaged(false);
+            this.setVisible(false);
+        }
+
         this.setSpacing(12);
         this.setStyle("-fx-background-color: transparent;");
         songs.addAll(s);

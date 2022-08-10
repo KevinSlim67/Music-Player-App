@@ -8,8 +8,8 @@ import javafx.scene.layout.VBox;
 public class HomePane extends VBox {
     public HomePane(User user) {
         this.setSpacing(20);
-        SongList latestSongs = new SongList("Newest Releases", Song.returnNewest(5));
-        SongList likedSongs = new SongList("Liked Songs", Song.returnLiked(user.getId(), 5));
+        SongList latestSongs = new SongList("Newest Releases", Song.returnNewest(8));
+        SongList likedSongs = new SongList("Liked Songs", Song.returnLiked(user.getId(), 8));
         this.getChildren().addAll(latestSongs, likedSongs);
     }
 }

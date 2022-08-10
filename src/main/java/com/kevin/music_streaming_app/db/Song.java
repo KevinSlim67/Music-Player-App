@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Song {
-    String name, user = null, genre;
-    File songFile, songCoverFile;
-    Blob song, cover;
-    int userId;
+    private String name, user = null, genre;
+    private File songFile, songCoverFile;
+    private Blob song, cover;
+    private Integer userId, id;
 
     public Song(String name, String user, File songFile, File songCoverFile, String genre) {
         this.name = name;
@@ -39,10 +39,10 @@ public class Song {
             FileInputStream songStream = new FileInputStream(songFile);
             FileInputStream songImage = new FileInputStream(songCoverFile);
 
-            int id = searchUserId();
+            int userId = searchUserId();
 
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(query);
-            preparedStmt.setInt(1, id);
+            preparedStmt.setInt(1, userId);
             preparedStmt.setString(2, name);
             preparedStmt.setBlob(3, songStream);
             preparedStmt.setBlob(4, songImage);
@@ -77,20 +77,21 @@ public class Song {
         return -1;
     }
 
-    public Blob searchSong() throws SQLException {
-        Statement s = DB.getConnection().createStatement();
+    public static int searchIdByName(String name) {
+        try {
+            Statement s = DB.getConnection().createStatement();
+            String query = "SELECT * FROM Song WHERE song_name = '" + name + "'";
+            ResultSet rs = s.executeQuery(query);
 
-        String query = "SELECT * FROM Song";
-        ResultSet rs = s.executeQuery(query);
-        int id = searchUserId();
+            while (rs.next()) {
+                return rs.getInt("id");
+            }
 
-        while (rs.next()) {
-            boolean isUser = rs.getInt("user_id") == id;
-            boolean isSong = rs.getString("song_name").equals(name);
-            if (isUser && isSong) return rs.getBlob("song");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return null;
+        return -1;
     }
 
     public static List<Song> returnNewest(int limit) {
@@ -193,6 +194,13 @@ public class Song {
         if (user != null) return user;
         else {
             return User.searchUserById(userId).getName();
+        }
+    }
+
+    public int getId() {
+        if (id != null) return id;
+        else {
+            return Song.searchIdByName(this.name);
         }
     }
 

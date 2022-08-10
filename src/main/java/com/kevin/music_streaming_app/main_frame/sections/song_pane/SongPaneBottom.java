@@ -1,6 +1,11 @@
 package com.kevin.music_streaming_app.main_frame.sections.song_pane;
 
+import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.db.Song;
+import com.kevin.music_streaming_app.db.User;
+import com.kevin.music_streaming_app.main_frame.component.buttons.FollowButton;
+import com.kevin.music_streaming_app.main_frame.component.buttons.LikeButton;
+import com.kevin.music_streaming_app.main_frame.component.buttons.PlayButton;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,9 +16,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+
 public class SongPaneBottom extends BorderPane {
     private boolean isPlay = true, isLiked = false, isFollowed = false;
-    private Button likedBtn = new Button(), playBtn = new Button(), followedBtn = new Button();
+    private Button playBtn = new Button();
     private VBox leftPane = new VBox(2);
     private HBox rightPane = new HBox(10);
     private HBox centerPane = new HBox(10);
@@ -37,15 +43,7 @@ public class SongPaneBottom extends BorderPane {
         centerPane.setPrefWidth(200);
         centerPane.setAlignment(Pos.CENTER);
 
-        Image pause = new Image("file:assets/icons/stop_btn.png");
-        ImageView imageView = new ImageView(pause);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(30);
-        imageView.setFitWidth(30);
-
-        playBtn.setGraphic(imageView);
-        playBtn.setOnAction(e -> playBtnOnClick());
-        playBtn.setStyle("-fx-background-color: transparent");
+        PlayButton playBtn = new PlayButton();
 
         centerPane.getChildren().add(playBtn);
         this.setCenter(centerPane);
@@ -59,31 +57,22 @@ public class SongPaneBottom extends BorderPane {
         HBox nameBox = new HBox(5);
         nameBox.setAlignment(Pos.CENTER_LEFT);
 
-        Image likedImg = new Image("file:assets/icons/like.png");
-        ImageView likedImgView = new ImageView(likedImg);
-        likedImgView.setFitWidth(20);
-        likedImgView.setFitHeight(20);
-
-        likedBtn.setPadding(new Insets(0));
-        likedBtn.setStyle("-fx-background-color: transparent;");
-        likedBtn.setGraphic(likedImgView);
-        likedBtn.setOnAction(e -> likeClick());
+        LikeButton likeBtn = new LikeButton(AppStage.getUser(),
+                Song.searchIdByName(songName), 20);
 
         Label name = new Label(songName);
         name.setStyle("-fx-font-size: 18px; -fx-font-weight: bold");
         name.setWrapText(true);
 
-        nameBox.getChildren().addAll(likedBtn, name);
+        nameBox.getChildren().addAll(likeBtn, name);
 
         Image followedImg = new Image("file:assets/icons/follow.png");
         ImageView followedImgView = new ImageView(followedImg);
         followedImgView.setFitWidth(20);
         followedImgView.setFitHeight(20);
 
-        followedBtn.setPadding(new Insets(0));
-        followedBtn.setStyle("-fx-background-color: transparent;");
-        followedBtn.setGraphic(followedImgView);
-        followedBtn.setOnAction(e -> followClick());
+        FollowButton followBtn = new FollowButton(AppStage.getUser(),
+                User.searchUserByName(artist), 20);
 
         HBox singerBox = new HBox(5);
         singerBox.setAlignment(Pos.CENTER_LEFT);
@@ -91,7 +80,7 @@ public class SongPaneBottom extends BorderPane {
         Label singer = new Label(artist);
         singer.setStyle("-fx-font-size: 14px;");
 
-        singerBox.getChildren().addAll(followedBtn, singer);
+        singerBox.getChildren().addAll(followBtn, singer);
 
         leftPane.getChildren().addAll(nameBox, singerBox);
 
@@ -110,47 +99,5 @@ public class SongPaneBottom extends BorderPane {
         this.setRight(rightPane);
     }
 
-    private void playBtnOnClick() {
-        Image image;
-        if (isPlay) {
-            image = new Image("file:assets/icons/play_btn.png");
-            Song.pause();
-        } else {
-            image = new Image("file:assets/icons/stop_btn.png");
-            Song.resume();
-        }
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(30);
-        imageView.setFitWidth(30);
-        imageView.setPreserveRatio(true);
-        playBtn.setGraphic(imageView);
-        isPlay = !isPlay;
-    }
 
-    private void likeClick() {
-        Image image;
-        ImageView imageView;
-        if (!isLiked) image = new Image("file:assets/icons/like_clicked.png");
-        else image = new Image("file:assets/icons/like.png");
-
-
-        isLiked = !isLiked;
-        imageView = new ImageView(image);
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
-        likedBtn.setGraphic(imageView);
-    }
-
-    private void followClick() {
-        Image image;
-        ImageView imageView;
-        if (!isFollowed) image = new Image("file:assets/icons/follow_clicked.png");
-        else image = new Image("file:assets/icons/follow.png");
-
-        isFollowed = !isFollowed;
-        imageView = new ImageView(image);
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
-        followedBtn.setGraphic(imageView);
-    }
 }

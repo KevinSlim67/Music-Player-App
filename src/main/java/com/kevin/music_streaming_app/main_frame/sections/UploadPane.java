@@ -3,6 +3,7 @@ package com.kevin.music_streaming_app.main_frame.sections;
 import com.kevin.music_streaming_app.StageManager;
 import com.kevin.music_streaming_app.db.Song;
 import com.kevin.music_streaming_app.db.User;
+import com.kevin.music_streaming_app.features.Visibility;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,7 +20,8 @@ import javafx.stage.FileChooser;
 import java.io.File;
 
 
-public class UploadPane extends HBox {
+public class UploadPane extends VBox {
+    HBox box;
     private TextField songName;
     private ChoiceBox genre;
     private FileChooser imageChooser, songChooser;
@@ -27,18 +29,31 @@ public class UploadPane extends HBox {
     private File selectedImage, selectedSong;
     private StackPane imagePane;
     private Label songChosen;
+    private Label errorMessage = new Label();
+    private Label successMessage = new Label("Song successfully uploaded!");
 
     public UploadPane(User user) {
         this.user = user;
         this.getStyleClass().add("upload-pane");
         this.setSpacing(40);
 
+        Label label = new Label("Upload Song");
+        label.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+
+        box = new HBox(40);
         createLeft();
         createRight();
+
+        this.getChildren().addAll(label, box);
     }
 
     private void createRight() {
         VBox vBox = new VBox(20);
+        errorMessage.setStyle("-fx-text-fill: red");
+        Visibility.hide(errorMessage);
+
+        successMessage.setStyle("-fx-text-fill: green");
+        Visibility.hide(successMessage);
 
         songChosen = new Label("");
         songChosen.setVisible(false);
@@ -63,14 +78,11 @@ public class UploadPane extends HBox {
         Button chooseSong = new Button("Choose Song");
         chooseSong.setOnAction(e -> selectSong());
 
-        songChosen = new Label("");
-        songChosen.setStyle("-fx-text-fill: white");
-
         Button submit = new Button("Submit");
-        submit.setOnAction(e -> addSong());
+        submit.setOnAction(e -> submitClick());
 
-        vBox.getChildren().addAll(songName, genre, chooseSong, songChosen, submit);
-        this.getChildren().add(vBox);
+        vBox.getChildren().addAll(songName, genre, chooseSong, songChosen, submit, errorMessage, successMessage);
+        box.getChildren().add(vBox);
     }
 
     private void createLeft() {
@@ -93,7 +105,7 @@ public class UploadPane extends HBox {
 
         vBox.getChildren().addAll(imagePane, chooseImage);
 
-        this.getChildren().add(vBox);
+        box.getChildren().add(vBox);
     }
 
     private void selectImage() {
@@ -120,12 +132,26 @@ public class UploadPane extends HBox {
 
     }
 
-    private void addSong() {
+    private boolean addSong() {
         String name = songName.getText();
         String user = this.user.getName();
         String genre = (String) this.genre.getSelectionModel().getSelectedItem();
 
         Song song = new Song(name, user, selectedSong, selectedImage, genre);
-        song.insert();
+        return song.insert();
+    }
+
+    private void submitClick() {
+        if (songName.getText().isEmpty()) {
+            errorMessage.setText("Please enter a song name!");
+            Visibility.showTemporarly(errorMessage, 5000);
+        } else if (songChosen.getText().isEmpty()) {
+            errorMessage.setText("Please input a song!");
+            Visibility.showTemporarly(errorMessage, 5000);
+        } else {
+            if (addSong()) {
+                Visibility.showTemporarly(successMessage, 5000);
+            }
+        }
     }
 }

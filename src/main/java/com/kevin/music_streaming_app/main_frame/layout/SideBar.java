@@ -3,6 +3,7 @@ package com.kevin.music_streaming_app.main_frame.layout;
 import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.db.User;
 import com.kevin.music_streaming_app.main_frame.sections.HomePane;
+import com.kevin.music_streaming_app.main_frame.sections.LibraryPane;
 import com.kevin.music_streaming_app.main_frame.sections.MySongsPane;
 import com.kevin.music_streaming_app.main_frame.sections.UploadPane;
 import javafx.geometry.Insets;
@@ -14,9 +15,8 @@ public class SideBar extends VBox {
 
     private Button[] buttons = {
             new Button("Home"),
-            new Button("Liked Songs"),
+            new Button("Library"),
             new Button("My Songs"),
-            new Button("My Playlists"),
             new Button("Upload Song")
     };
 
@@ -33,8 +33,10 @@ public class SideBar extends VBox {
         for (int i = 0; i < buttons.length; i++) {
 
             if (buttons[i].getText().equals("Home")) {
-                buttons[i].setStyle("-fx-text-fill: orange");
+                buttons[i].setStyle("-fx-text-fill: #FFC42E");
                 buttons[i].setOnAction(e -> clickHome());
+            } else if (buttons[i].getText().equals("Library")) {
+                buttons[i].setOnAction(e -> clickLibrary());
             } else if (buttons[i].getText().equals("Upload Song"))
                 buttons[i].setOnAction(e -> clickUpload());
             else if (buttons[i].getText().equals("My Songs"))
@@ -66,6 +68,12 @@ public class SideBar extends VBox {
         paintButton("My Songs");
     }
 
+    private void clickLibrary() {
+        clearCenter();
+        setCenter(new LibraryPane(user));
+        paintButton("Library");
+    }
+
 
     private void clearCenter() {
         AppStage.getCenter().getPane().getChildren().clear();
@@ -78,7 +86,7 @@ public class SideBar extends VBox {
     private void paintButton(String selected) {
         for (int i = 0; i < buttons.length; i++) {
             if (buttons[i].getText().equals(selected))
-                buttons[i].setStyle("-fx-text-fill: orange;");
+                buttons[i].setStyle("-fx-text-fill: #FFC42E;");
             else
                 buttons[i].setStyle("-fx-text-fill: white;");
         }

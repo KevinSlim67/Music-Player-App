@@ -2,6 +2,7 @@ package com.kevin.music_streaming_app.login_frame;
 
 import com.kevin.music_streaming_app.LoginStage;
 import com.kevin.music_streaming_app.db.User;
+import com.kevin.music_streaming_app.features.Visibility;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -28,12 +29,10 @@ public class Register extends VBox {
         password.setPromptText("Password");
 
         errorLabel.setStyle("-fx-text-fill: red");
-        errorLabel.setVisible(false);
-        errorLabel.setManaged(false);
+        Visibility.hide(errorLabel);
 
         successLabel.setStyle("-fx-text-fill: green");
-        successLabel.setVisible(false);
-        successLabel.setManaged(false);
+        Visibility.hide(successLabel);
 
         Button register = new Button("Sign Up");
         register.setPadding(new Insets(5, 10, 5, 10));
@@ -64,22 +63,9 @@ public class Register extends VBox {
 
         User user = new User(username, password);
         if (!user.insert()) {
-            //if there is no error message, create the error message, and then remove after 3 seconds
-            if (!errorLabel.isVisible()) {
-                errorLabel.setVisible(true);
-                errorLabel.setManaged(true);
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        errorLabel.setVisible(false);
-                        errorLabel.setManaged(false);
-                    }
-                }, 3000);
-            }
+            Visibility.showTemporarly(errorLabel, 3000);
         } else {
-            successLabel.setVisible(true);
-            successLabel.setManaged(true);
+            Visibility.show(successLabel);
         }
     }
 }
