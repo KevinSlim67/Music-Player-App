@@ -10,11 +10,13 @@ public class HomePane extends VBox {
         this.setSpacing(20);
         SongList latestSongs = new SongList("Newest Releases", Song.returnNewest(12));
         SongList likedSongs = new SongList("Liked Songs", Song.returnLiked(user.getId(), 12));
+        SongList recentListensSongs = new SongList("Recently Listened To", Song.returnRecentListens(user.getId(), 12));
         SongList popSongs = new SongList("Pop Songs", Song.returnGenre("Pop", 12));
         SongList chillSongs = new SongList("Chill Songs", Song.returnGenre("Chill", 12));
         SongList instrumentalSongs = new SongList("Instrumental Songs", Song.returnGenre("Instrumental", 12));
         SongList metalSongs = new SongList("Metal Songs", Song.returnGenre("Metal", 12));
-        this.getChildren().addAll(latestSongs, likedSongs, popSongs, chillSongs, instrumentalSongs,
-                metalSongs);
+
+        this.getChildren().addAll(latestSongs, likedSongs, recentListensSongs, popSongs
+                , chillSongs, instrumentalSongs, metalSongs);
     }
 }

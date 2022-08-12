@@ -2,6 +2,7 @@ package com.kevin.music_streaming_app.main_frame.component.buttons;
 
 import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.audio.PausablePlayer;
+import com.kevin.music_streaming_app.db.RecentlyListened;
 import com.kevin.music_streaming_app.db.Song;
 import com.kevin.music_streaming_app.features.ImageStyle;
 import com.kevin.music_streaming_app.main_frame.sections.song_pane.SongPane;
@@ -67,6 +68,11 @@ public class SongButton extends VBox {
         SongPane pane = new SongPane(song);
         AppStage.getRoot().getChildren().add(pane);
         AppStage.setPlayer(new PausablePlayer(song.getSong()));
+
+        RecentlyListened recentlyListened = new RecentlyListened(AppStage.getUser().getId(), song.getId());
+        recentlyListened.delete(); //removes the song if it exists so we don't have duplicates
+        recentlyListened.insert(); //adds the song at the bottom of the list
+
         AppStage.getPlayer().play();
     }
 

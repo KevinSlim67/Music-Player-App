@@ -106,10 +106,10 @@ public class Song {
         int count = 0;
 
         try {
-            Statement s = DB.getConnection().createStatement();
             String query = "SELECT song_name, genre, user_id, song_cover FROM Song ORDER BY release_date DESC";
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
 
-            ResultSet rs = s.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
             int userId;
             String songName, genre;
             Blob songCover;
@@ -133,10 +133,10 @@ public class Song {
         int count = 0;
 
         try {
-            Statement s = DB.getConnection().createStatement();
             String query = "SELECT song_name, genre, Song.user_id, song_cover FROM Song JOIN LikedSong ON Song.id = LikedSong.song_id WHERE LikedSong.user_id = '" + usId + "'";
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
 
-            ResultSet rs = s.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
             int userId;
             String songName, genre;
             Blob songCover;
@@ -160,11 +160,11 @@ public class Song {
         int count = 0;
 
         try {
-            Statement s = DB.getConnection().createStatement();
-            String query = "SELECT song_name, genre, user_id, song_cover FROM Song WHERE genre = '"+
-                    genre + "' ORDER BY release_date DESC";
+            String query = "SELECT song_name, genre, user_id, song_cover FROM Song WHERE genre = ? ORDER BY release_date DESC";
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            ps.setString(1, genre);
 
-            ResultSet rs = s.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
             int userId;
             String songName, songGenre;
             Blob songCover;
@@ -172,6 +172,34 @@ public class Song {
             while (rs.next() && count++ < limit) {
                 songName = rs.getString("song_name");
                 songGenre = rs.getString("genre");
+                userId = rs.getInt("user_id");
+                songCover = rs.getBlob("song_cover");
+                songs.add(new Song(songName, userId, songCover, songGenre));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return songs;
+    }
+
+    public static List<Song> returnRecentListens(int usId, int limit) {
+        List<Song> songs = new ArrayList<Song>();
+        int count = 0;
+
+        try {
+            String query = "SELECT song_name, genre, Song.user_id, song_cover FROM Song JOIN RecentlyListened ON Song.id = RecentlyListened.song_id WHERE RecentlyListened.user_id = ? ORDER BY order_id DESC";
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            ps.setInt(1, usId);
+
+            ResultSet rs = ps.executeQuery();
+            int userId;
+            String songName, genre;
+            Blob songCover;
+
+            while (rs.next() && count++ < limit) {
+                songName = rs.getString("song_name");
+                genre = rs.getString("genre");
                 userId = rs.getInt("user_id");
                 songCover = rs.getBlob("song_cover");
                 songs.add(new Song(songName, userId, songCover, genre));
@@ -223,6 +251,10 @@ public class Song {
         return name;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
     public String getUser() {
         if (user != null) return user;
         else {
@@ -240,10 +272,13 @@ public class Song {
     public Blob getSong() {
         if (song == null) {
             try {
-                Statement s = DB.getConnection().createStatement();
-                String query = "SELECT song FROM Song WHERE song_name = '" + this.name + "' AND user_id = " + this.userId;
+                String query = "SELECT song FROM Song WHERE song_name = ? AND user_id = ?";
+                PreparedStatement ps = DB.getConnection().prepareStatement(query);
 
-                ResultSet rs = s.executeQuery(query);
+                ps.setString(1, this.name);
+                ps.setInt(2, this.userId);
+
+                ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
                     Blob content = rs.getBlob("song");

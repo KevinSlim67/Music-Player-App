@@ -1,6 +1,7 @@
 package com.kevin.music_streaming_app.audio;
 
 import com.kevin.music_streaming_app.AppStage;
+import com.kevin.music_streaming_app.db.RecentlyListened;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
@@ -56,7 +57,7 @@ public class PausablePlayer {
                     AppStage.getThreads().add(t);
 
                     try {
-                        Thread.sleep(500); //to add a little delay between switching songs
+                        Thread.sleep(50); //to add a little delay between switching songs
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
