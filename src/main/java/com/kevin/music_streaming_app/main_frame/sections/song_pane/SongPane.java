@@ -5,8 +5,6 @@ import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
-import java.sql.Blob;
-
 public class SongPane extends StackPane {
     private SongPaneBottom songPaneBottom;
     private SongPaneCenter songPaneCenter;
@@ -38,17 +36,5 @@ public class SongPane extends StackPane {
         pane.getChildren().add(borderPane);
 
         this.getChildren().add(pane);
-    }
-
-    public SongPaneBottom getSongPaneBottom() {
-        return songPaneBottom;
-    }
-
-    public SongPaneCenter getSongPaneCenter() {
-        return songPaneCenter;
-    }
-
-    public SongPaneTop getSongPaneTop() {
-        return songPaneTop;
     }
 }

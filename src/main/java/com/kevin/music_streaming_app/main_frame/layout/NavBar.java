@@ -1,7 +1,9 @@
 package com.kevin.music_streaming_app.main_frame.layout;
 
+import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.LoginStage;
 import com.kevin.music_streaming_app.StageManager;
+import com.kevin.music_streaming_app.audio.PausablePlayer;
 import com.kevin.music_streaming_app.db.User;
 import com.kevin.music_streaming_app.main_frame.component.SearchBar;
 import javafx.collections.FXCollections;
@@ -34,6 +36,8 @@ public class NavBar extends BorderPane {
     }
 
     private void logout() {
+        PausablePlayer player = AppStage.getPlayer();
+        if (player != null) player.stop();
         StageManager.getStage().close();
         StageManager.setStage(new LoginStage());
     }

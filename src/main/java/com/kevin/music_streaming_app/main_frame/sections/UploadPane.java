@@ -26,7 +26,7 @@ public class UploadPane extends VBox {
     private ChoiceBox genre;
     private FileChooser imageChooser, songChooser;
     private User user;
-    private File selectedImage, selectedSong;
+    private File selectedImage =  new File("assets/placeholder.jpg"), selectedSong;
     private StackPane imagePane;
     private Label songChosen;
     private Label errorMessage = new Label();
@@ -70,7 +70,7 @@ public class UploadPane extends VBox {
         songName.setMaxWidth(200);
         songName.setPrefWidth(200);
 
-        genre = new ChoiceBox(FXCollections.observableArrayList("Pop", "Rock", "Hip-Hop", "Electronic", "Chill", "Instrumental", "Jazz", "Classical", "Metal"));
+        genre = new ChoiceBox(FXCollections.observableArrayList("Pop", "Rock", "Country", "Electronic", "Chill", "Instrumental", "Jazz", "Classical", "Metal"));
         genre.setValue("Genre");
         genre.setMaxWidth(200);
         genre.setPrefWidth(200);
@@ -124,7 +124,7 @@ public class UploadPane extends VBox {
         String songPath = songChooser.showOpenDialog(StageManager.getStage())
                 .toURI().toString().replace("file:/", "")
                 .replace("%20", " ");
-        this.selectedSong = new File(songPath);
+        if (songPath != null) this.selectedSong = new File(songPath);
         songChosen.setText(songPath);
 
         songChosen.setVisible(true);

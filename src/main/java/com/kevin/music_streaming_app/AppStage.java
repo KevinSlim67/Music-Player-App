@@ -28,6 +28,8 @@ public class AppStage extends Stage {
 
     public AppStage(User user) {
         this.user = user;
+
+        this.setTitle("Music Player App");
         root = new StackPane();
         root.setStyle("-fx-background-color: #010211;");
 
@@ -54,7 +56,7 @@ public class AppStage extends Stage {
 
         root.getChildren().add(borderPane);
 
-        scene = new Scene(root, 770, 620);
+        scene = new Scene(root, 770, 650);
         scene.getStylesheets().add("style.css");
         this.setScene(scene);
         this.show();

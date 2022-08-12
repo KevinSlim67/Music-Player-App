@@ -58,7 +58,7 @@ public class SongPaneBottom extends BorderPane {
         nameBox.setAlignment(Pos.CENTER_LEFT);
 
         LikeButton likeBtn = new LikeButton(AppStage.getUser(),
-                Song.searchIdByName(songName), 20);
+                Song.searchId(songName), 20);
 
         Label name = new Label(songName);
         name.setStyle("-fx-font-size: 18px; -fx-font-weight: bold");

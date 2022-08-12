@@ -85,27 +85,7 @@ public class User {
 
         return null;
     }
-
-    public static List<String> returnAll() {
-        List<String> list = new ArrayList<String>();
-        Statement statement = DB.createStatement(DB.getConnection());
-
-        try {
-            String query = "SELECT * FROM User";
-            ResultSet rs = statement.executeQuery(query);
-            String id, name;
-
-            while (rs.next()) {
-                id = "id: " + rs.getString("id");
-                name = ", name: " + rs.getString("username");
-                list.add(id + name);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return list;
-    }
+    
 
     public static Object[] verifyLogin(String username, String password) {
         Statement statement = DB.createStatement(DB.getConnection());

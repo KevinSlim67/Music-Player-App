@@ -1,6 +1,9 @@
 package com.kevin.music_streaming_app.main_frame.component.buttons;
 
+import com.kevin.music_streaming_app.AppStage;
+import com.kevin.music_streaming_app.audio.PausablePlayer;
 import com.kevin.music_streaming_app.db.Song;
+import com.kevin.music_streaming_app.main_frame.sections.song_pane.SongPane;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +26,7 @@ public class PlayButton extends Button {
 
     private void onClick() {
         Image image;
+
         if (isPlaying) {
             image = new Image("file:assets/icons/play_btn.png");
             Song.pause();
@@ -37,5 +41,6 @@ public class PlayButton extends Button {
 
         this.setGraphic(imageView);
         isPlaying = !isPlaying;
+
     }
 }

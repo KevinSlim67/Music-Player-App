@@ -31,6 +31,13 @@ public class Song {
         this.genre = genre;
     }
 
+    public Song(String name, int userId, Blob cover, String genre) {
+        this.name = name;
+        this.userId = userId;
+        this.cover = cover;
+        this.genre = genre;
+    }
+
     public boolean insert() {
         try {
             String query = "INSERT INTO Song (user_id, song_name, song, song_cover, genre, release_date)" +
@@ -77,17 +84,17 @@ public class Song {
         return -1;
     }
 
-    public static int searchIdByName(String name) {
+    public static int searchId(String name) {
         try {
             Statement s = DB.getConnection().createStatement();
-            String query = "SELECT * FROM Song WHERE song_name = '" + name + "'";
+            String query = "SELECT id FROM Song WHERE song_name = '" + name + "'";
             ResultSet rs = s.executeQuery(query);
 
             while (rs.next()) {
                 return rs.getInt("id");
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -100,20 +107,19 @@ public class Song {
 
         try {
             Statement s = DB.getConnection().createStatement();
-            String query = "SELECT * FROM Song ORDER BY release_date DESC";
+            String query = "SELECT song_name, genre, user_id, song_cover FROM Song ORDER BY release_date DESC";
 
             ResultSet rs = s.executeQuery(query);
             int userId;
             String songName, genre;
-            Blob song, songCover;
+            Blob songCover;
 
             while (rs.next() && count++ < limit) {
                 songName = rs.getString("song_name");
                 genre = rs.getString("genre");
                 userId = rs.getInt("user_id");
-                song = rs.getBlob("song");
                 songCover = rs.getBlob("song_cover");
-                songs.add(new Song(songName, userId, song, songCover, genre));
+                songs.add(new Song(songName, userId, songCover, genre));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,20 +134,19 @@ public class Song {
 
         try {
             Statement s = DB.getConnection().createStatement();
-            String query = "SELECT * FROM Song JOIN LikedSong ON Song.id = LikedSong.song_id WHERE LikedSong.user_id = '" + usId + "'";
+            String query = "SELECT song_name, genre, Song.user_id, song_cover FROM Song JOIN LikedSong ON Song.id = LikedSong.song_id WHERE LikedSong.user_id = '" + usId + "'";
 
             ResultSet rs = s.executeQuery(query);
             int userId;
             String songName, genre;
-            Blob song, songCover;
+            Blob songCover;
 
             while (rs.next() && count++ < limit) {
                 songName = rs.getString("song_name");
                 genre = rs.getString("genre");
                 userId = rs.getInt("user_id");
-                song = rs.getBlob("song");
                 songCover = rs.getBlob("song_cover");
-                songs.add(new Song(songName, userId, song, songCover, genre));
+                songs.add(new Song(songName, userId, songCover, genre));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,26 +155,54 @@ public class Song {
         return songs;
     }
 
+    public static List<Song> returnGenre(String genre, int limit) {
+        List<Song> songs = new ArrayList<Song>();
+        int count = 0;
+
+        try {
+            Statement s = DB.getConnection().createStatement();
+            String query = "SELECT song_name, genre, user_id, song_cover FROM Song WHERE genre = '"+
+                    genre + "' ORDER BY release_date DESC";
+
+            ResultSet rs = s.executeQuery(query);
+            int userId;
+            String songName, songGenre;
+            Blob songCover;
+
+            while (rs.next() && count++ < limit) {
+                songName = rs.getString("song_name");
+                songGenre = rs.getString("genre");
+                userId = rs.getInt("user_id");
+                songCover = rs.getBlob("song_cover");
+                songs.add(new Song(songName, userId, songCover, genre));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return songs;
+    }
+
+
     public static List<Song> returnUserSongs(int usId, int limit) {
         List<Song> songs = new ArrayList<Song>();
         int count = 0;
 
         try {
             Statement s = DB.getConnection().createStatement();
-            String query = "SELECT * FROM Song WHERE user_id = '" + usId + "'";
+            String query = "SELECT song_name, genre, user_id, song_cover FROM Song WHERE user_id = " + usId;
 
             ResultSet rs = s.executeQuery(query);
             int userId;
             String songName, genre;
-            Blob song, songCover;
+            Blob songCover;
 
             while (rs.next() && count++ < limit) {
                 songName = rs.getString("song_name");
                 genre = rs.getString("genre");
                 userId = rs.getInt("user_id");
-                song = rs.getBlob("song");
                 songCover = rs.getBlob("song_cover");
-                songs.add(new Song(songName, userId, song, songCover, genre));
+                songs.add(new Song(songName, userId, songCover, genre));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -200,11 +233,29 @@ public class Song {
     public int getId() {
         if (id != null) return id;
         else {
-            return Song.searchIdByName(this.name);
+            return Song.searchId(this.name);
         }
     }
 
     public Blob getSong() {
+        if (song == null) {
+            try {
+                Statement s = DB.getConnection().createStatement();
+                String query = "SELECT song FROM Song WHERE song_name = '" + this.name + "' AND user_id = " + this.userId;
+
+                ResultSet rs = s.executeQuery(query);
+
+                while (rs.next()) {
+                    Blob content = rs.getBlob("song");
+                    this.song = content;
+                    return content;
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         return song;
     }
 

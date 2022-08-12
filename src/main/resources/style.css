@@ -15,7 +15,7 @@
 }
 
 .choice-box .menu-item:focused {
-    -fx-background-color: #FFC42E;
+    -fx-background-color: #FF9900;
     -fx-background-radius: 5px;
 }
 
@@ -24,6 +24,10 @@
     -fx-background-radius: 2px;
     -fx-border-radius: 2px;
     -fx-text-fill: white;
+}
+
+.sidebar .button {
+    -fx-font-size: 14px;
 }
 
 .sidebar .button, .navbar .button:hover {
@@ -120,7 +124,6 @@
     -fx-background-color :transparent;
     -fx-background-radius : 0.0em;
     -fx-padding :0.0 0.0 10.0 0.0;
-
 }
 
 .scroll-bar:vertical .increment-button ,
@@ -128,9 +131,8 @@
     -fx-background-color :transparent;
     -fx-background-radius : 0.0em;
     -fx-padding :0.0 10.0 0.0 0.0;
-
 }
 
-.horizontal-song-btn {
-
+.scroll-bar, .scroll-bar:pressed, .scroll-bar:focused {
+    -fx-font-size: 1px;
 }

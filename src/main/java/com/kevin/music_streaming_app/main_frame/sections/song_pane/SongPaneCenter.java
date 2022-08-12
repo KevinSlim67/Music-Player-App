@@ -1,5 +1,6 @@
 package com.kevin.music_streaming_app.main_frame.sections.song_pane;
 
+import com.kevin.music_streaming_app.features.ImageStyle;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,31 +32,11 @@ public class SongPaneCenter extends BorderPane {
         imageView.setFitWidth(400);
         imageView.setFitHeight(400);
         imageView.setPreserveRatio(true);
-        roundImage(imageView, 3);
+        ImageStyle.round(imageView, 3);
 
         centerPane.setCenter(imageView);
 
         this.setCenter(centerPane);
     }
 
-    private void roundImage(ImageView imageView, int roundingSize) {
-        // set a clip to apply rounded border to the original image.
-        Rectangle clip = new Rectangle(
-                imageView.getFitWidth(), imageView.getFitHeight()
-        );
-        clip.setArcWidth(roundingSize);
-        clip.setArcHeight(roundingSize);
-        imageView.setClip(clip);
-
-        // snapshot the rounded image.
-        SnapshotParameters parameters = new SnapshotParameters();
-        parameters.setFill(Color.TRANSPARENT);
-        WritableImage image = imageView.snapshot(parameters, null);
-
-        // remove the rounding clip so that our effect can show through.
-        imageView.setClip(null);
-
-        // store the rounded image in the imageView.
-        imageView.setImage(image);
-    }
 }

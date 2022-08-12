@@ -13,6 +13,7 @@ public class LoginStage extends Stage {
     private static VBox mainPane;
 
     public LoginStage() {
+        this.setTitle("Music Player App");
         root = new StackPane();
         root.getStyleClass().add("login");
 

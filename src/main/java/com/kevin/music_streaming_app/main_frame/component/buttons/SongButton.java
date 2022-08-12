@@ -3,6 +3,7 @@ package com.kevin.music_streaming_app.main_frame.component.buttons;
 import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.audio.PausablePlayer;
 import com.kevin.music_streaming_app.db.Song;
+import com.kevin.music_streaming_app.features.ImageStyle;
 import com.kevin.music_streaming_app.main_frame.sections.song_pane.SongPane;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
@@ -39,7 +40,7 @@ public class SongButton extends VBox {
         imageView = new ImageView(image);
         imageView.setFitHeight(100);
         imageView.setFitWidth(100);
-        roundImage(imageView, 20);
+        ImageStyle.round(imageView, 20);
 
         imageView.setPreserveRatio(true); //preserves aspect ratio
         imageView.addEventFilter(MouseEvent.MOUSE_CLICKED, e -> onClick());
@@ -79,26 +80,5 @@ public class SongButton extends VBox {
         imageView.setScaleX(1);
         imageView.setScaleY(1);
         AppStage.returnScene().setCursor(Cursor.DEFAULT);
-    }
-
-    private void roundImage(ImageView imageView, int roundingSize) {
-        // set a clip to apply rounded border to the original image.
-        Rectangle clip = new Rectangle(
-                imageView.getFitWidth(), imageView.getFitHeight()
-        );
-        clip.setArcWidth(roundingSize);
-        clip.setArcHeight(roundingSize);
-        imageView.setClip(clip);
-
-        // snapshot the rounded image.
-        SnapshotParameters parameters = new SnapshotParameters();
-        parameters.setFill(Color.TRANSPARENT);
-        WritableImage image = imageView.snapshot(parameters, null);
-
-        // remove the rounding clip so that our effect can show through.
-        imageView.setClip(null);
-
-        // store the rounded image in the imageView.
-        imageView.setImage(image);
     }
 }

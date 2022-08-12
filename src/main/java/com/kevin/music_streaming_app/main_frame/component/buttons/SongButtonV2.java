@@ -1,24 +1,34 @@
 package com.kevin.music_streaming_app.main_frame.component.buttons;
 
 import com.kevin.music_streaming_app.AppStage;
+import com.kevin.music_streaming_app.LoginStage;
+import com.kevin.music_streaming_app.StageManager;
+import com.kevin.music_streaming_app.audio.PausablePlayer;
 import com.kevin.music_streaming_app.db.Song;
 import com.kevin.music_streaming_app.db.User;
+import com.kevin.music_streaming_app.features.Visibility;
+import com.kevin.music_streaming_app.main_frame.sections.song_pane.SongPane;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.sql.SQLException;
 
-public class SongButtonV2 extends HBox {
-    public SongButtonV2(Song song) {
-        this.setHeight(50);
-        this.setPrefWidth(500);
-        this.setAlignment(Pos.CENTER_LEFT);
+public class SongButtonV2 extends BorderPane {
+    Song song;
+
+    public SongButtonV2(Song song, int width, int height) {
+        this.song = song;
+
+        this.setHeight(height);
+        this.setPrefWidth(width);
         this.getStyleClass().add("horizontal-song-btn");
         this.setStyle("-fx-background-color: #FFFFFF11");
-        this.setSpacing(10);
 
         Image cover = null;
         try {
@@ -27,8 +37,8 @@ public class SongButtonV2 extends HBox {
             e.printStackTrace();
         }
         ImageView coverView = new ImageView(cover);
-        coverView.setFitWidth(50);
-        coverView.setFitHeight(50);
+        coverView.setFitWidth(height);
+        coverView.setFitHeight(height);
         coverView.setPreserveRatio(true);
 
         VBox songInfoPane = new VBox(2);
@@ -53,9 +63,23 @@ public class SongButtonV2 extends HBox {
 
         songInfoPane.getChildren().addAll(songHBox, artistHBox);
 
+        HBox rightPane = new HBox(1);
+        rightPane.setAlignment(Pos.CENTER);
 
+        StartButton startButton = new StartButton(song, 30);
 
+        rightPane.getChildren().addAll(startButton);
 
-        this.getChildren().addAll(coverView, songInfoPane);
+        BorderPane.setMargin(songInfoPane, new Insets(0, 0, 0, 10));
+
+        this.setLeft(coverView);
+        this.setCenter(songInfoPane);
+        this.setRight(rightPane);
+
+    }
+
+    private void closeSong() {
+        PausablePlayer player = AppStage.getPlayer();
+        if (player != null) player.stop();
     }
 }

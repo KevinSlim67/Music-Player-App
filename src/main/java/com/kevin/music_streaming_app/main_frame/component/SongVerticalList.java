@@ -7,13 +7,14 @@ import javafx.scene.layout.VBox;
 import java.util.List;
 
 public class SongVerticalList extends VBox {
-    public SongVerticalList(List<Song> songs) {
+    public SongVerticalList(List<Song> songs, int width, int height) {
         this.setSpacing(5);
 
         songs.forEach(s -> {
             Song song = s;
-            SongButtonV2 button = new SongButtonV2(s);
+            SongButtonV2 button = new SongButtonV2(s, width, height);
             this.getChildren().add(button);
         });
+
     }
 }
