@@ -89,4 +89,12 @@ public class AppStage extends Stage {
     public static Center getCenter() {
         return center;
     }
+
+    public static SideBar getSideBar() {
+        return sideBar;
+    }
+
+    public static void setCenter(Center center) {
+        AppStage.center = center;
+    }
 }

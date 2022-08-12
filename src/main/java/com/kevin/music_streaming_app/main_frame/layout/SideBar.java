@@ -20,6 +20,7 @@ public class SideBar extends VBox {
             new Button("Upload Song")
     };
 
+    private String selected = "Home";
     private Pane centerPane = AppStage.getCenter();
     private User user = AppStage.getUser();
 
@@ -37,11 +38,11 @@ public class SideBar extends VBox {
                 buttons[i].setOnAction(e -> clickHome());
             } else if (buttons[i].getText().equals("Library")) {
                 buttons[i].setOnAction(e -> clickLibrary());
-            } else if (buttons[i].getText().equals("Upload Song"))
+            } else if (buttons[i].getText().equals("Upload Song")) {
                 buttons[i].setOnAction(e -> clickUpload());
-            else if (buttons[i].getText().equals("My Songs"))
+            } else if (buttons[i].getText().equals("My Songs")) {
                 buttons[i].setOnAction(e -> clickMySongs());
-
+            }
             this.getChildren().add(buttons[i]);
         }
     }
@@ -54,24 +55,29 @@ public class SideBar extends VBox {
         clearCenter();
         setCenter(new HomePane(user));
         paintButton("Home");
+        selected = "Home";
+        paintButton(selected);
     }
 
     private void clickUpload() {
         clearCenter();
         setCenter(new UploadPane(user));
-        paintButton("Upload Song");
+        selected = "Upload Song";
+        paintButton(selected);
     }
 
     private void clickMySongs() {
         clearCenter();
         setCenter(new MySongsPane(user));
-        paintButton("My Songs");
+        selected = "My Songs";
+        paintButton(selected);
     }
 
     private void clickLibrary() {
         clearCenter();
         setCenter(new LibraryPane(user));
-        paintButton("Library");
+        selected = "Library";
+        paintButton(selected);
     }
 
 
@@ -90,5 +96,9 @@ public class SideBar extends VBox {
             else
                 buttons[i].setStyle("-fx-text-fill: white;");
         }
+    }
+
+    public String getSelected() {
+        return selected;
     }
 }
