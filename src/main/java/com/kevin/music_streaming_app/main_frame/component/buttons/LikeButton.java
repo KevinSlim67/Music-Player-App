@@ -15,6 +15,10 @@ public class LikeButton extends Button {
     LikedSong likedSong;
 
     public LikeButton(User currentUser, int songId, int size) {
+        this.size = size;
+        this.currentUser = currentUser;
+        this.songId = songId;
+
         likedSong = new LikedSong(songId, currentUser.getId());
         Image likedImg = new Image("file:assets/icons/like.png");
 
@@ -23,10 +27,6 @@ public class LikeButton extends Button {
             likedImg = new Image("file:assets/icons/like_clicked.png");
             isLiked = true;
         }
-
-        this.size = size;
-        this.currentUser = currentUser;
-        this.songId = songId;
 
 
         ImageView likedImgView = new ImageView(likedImg);

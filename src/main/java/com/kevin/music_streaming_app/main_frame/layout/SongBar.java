@@ -44,16 +44,16 @@ public class SongBar extends BorderPane {
         songHBox.setAlignment(Pos.CENTER_LEFT);
 
         Label songName = new Label(song.getName());
-        songName.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        songName.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         LikeButton likeBtn = new LikeButton(AppStage.getUser(),
-                song.getId(), 18);
+                song.getId(), 20);
         songHBox.getChildren().addAll(likeBtn, songName);
 
         HBox artistHBox = new HBox(5);
         artistHBox.setAlignment(Pos.CENTER_LEFT);
         Label artistName = new Label(song.getUser());
-        artistName.setStyle("-fx-font-size: 12px");
-        FollowButton followBtn = new FollowButton(User.searchUserByName(song.getUser()).getId(), 15);
+        artistName.setStyle("-fx-font-size: 14px");
+        FollowButton followBtn = new FollowButton(User.searchUserByName(song.getUser()).getId(), 20);
         artistHBox.getChildren().addAll(followBtn, artistName);
 
         songInfoPane.getChildren().addAll(songHBox, artistHBox);

@@ -5,25 +5,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class LikedSong {
-    private int songId, userId;
+public class FollowedUser {
+    private int userId, followedUserId;
 
-    public LikedSong(int songId, int userId) {
-        this.songId = songId;
+    public FollowedUser(int userId, int followedUserId) {
         this.userId = userId;
+        this.followedUserId = followedUserId;
     }
 
     public boolean insert() {
         try {
-            String query = "INSERT INTO LikedSong (user_id, song_id)" +
+            String query = "INSERT INTO FollowedUser (user_id, followed_user_id)" +
                     " VALUES (?, ?)";
 
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(query);
             preparedStmt.setInt(1, this.userId);
-            preparedStmt.setInt(2, this.songId);
+            preparedStmt.setInt(2, this.followedUserId);
             preparedStmt.execute();
 
-            System.out.println("User " + userId + " liked " + songId);
+            System.out.println("User " + userId + " followed " + followedUserId);
 
             return true;
 
@@ -35,14 +35,14 @@ public class LikedSong {
 
     public boolean delete() {
         try {
-            String query = "DELETE FROM LikedSong WHERE user_id = ? AND song_id = ?";
+            String query = "DELETE FROM FollowedUser WHERE user_id = ? AND followed_user_id = ?";
 
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(query);
             preparedStmt.setInt(1, this.userId);
-            preparedStmt.setInt(2, this.songId);
+            preparedStmt.setInt(2, this.followedUserId);
             preparedStmt.execute();
 
-            System.out.println("User " + userId + " un-liked " + songId);
+            System.out.println("User " + userId + " un-followed " + followedUserId);
 
             return true;
 
@@ -54,11 +54,11 @@ public class LikedSong {
 
     public boolean exists() {
         try {
-            String query = "SELECT * FROM LikedSong WHERE user_id = ? AND song_id = ?";
+            String query = "SELECT * FROM FollowedUser WHERE user_id = ? AND followed_user_id = ?";
 
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(query);
             preparedStmt.setInt(1, this.userId);
-            preparedStmt.setInt(2, this.songId);
+            preparedStmt.setInt(2, this.followedUserId);
             ResultSet rs = preparedStmt.executeQuery();
 
             if (rs.next()) return true;

@@ -55,16 +55,17 @@ public class SearchBar extends HBox {
         String selectedCategory = (String) selectSearchType.getSelectionModel().getSelectedItem();
         String searchQuery = searchBar.getText();
         Center center = AppStage.getCenter();
-        center.getChildren().clear(); //clears current pane
 
-        if (selectedCategory.equals("Song")) {
-            List<Song> newList = Song.returnAllThatContain(searchQuery, Integer.MAX_VALUE);
-            center.setPane(new SearchResultsPane(newList));
-        } else if (selectedCategory.equals("Artist")) {
-            List<User> newList = User.returnAllThatContain(searchQuery, Integer.MAX_VALUE);
-            center.setPane(new SearchResultsPane(newList));
+        if (!searchQuery.isEmpty()) {
+            center.getChildren().clear(); //clears current pane
+            if (selectedCategory.equals("Song")) {
+                List<Song> newList = Song.returnAllThatContain(searchQuery, Integer.MAX_VALUE);
+                center.setPane(new SearchResultsPane(newList));
+            } else if (selectedCategory.equals("Artist")) {
+                List<User> newList = User.returnAllThatContain(searchQuery, Integer.MAX_VALUE);
+                center.setPane(new SearchResultsPane(newList));
+            }
         }
-
     }
 
     private void searchEnter() {
