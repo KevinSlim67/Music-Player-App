@@ -1,10 +1,7 @@
 package com.kevin.music_streaming_app.db;
 
 import java.io.FileInputStream;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +82,32 @@ public class User {
 
         return null;
     }
-    
+
+    public static List<User> returnAllThatContain(String word, int limit) {
+        List<User> users = new ArrayList<>();
+        int count = 0;
+
+        try {
+            String query = "SELECT id, username FROM User WHERE username LIKE ?";
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            ps.setString(1,"%" + word + "%");
+
+            ResultSet rs = ps.executeQuery();
+            int id;
+            String name;
+
+            while (rs.next() && count++ < limit) {
+                id = rs.getInt("id");
+                name = rs.getString("username");
+                users.add(new User(name, id));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
 
     public static Object[] verifyLogin(String username, String password) {
         Statement statement = DB.createStatement(DB.getConnection());

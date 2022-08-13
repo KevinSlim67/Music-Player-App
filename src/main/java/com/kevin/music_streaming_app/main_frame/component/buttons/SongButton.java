@@ -65,6 +65,7 @@ public class SongButton extends VBox {
 
     //creates Song Pane and plays the required song
     private void onClick() {
+        AppStage.getBorderPane().setBottom(null);
         SongPane pane = new SongPane(song);
         AppStage.getRoot().getChildren().add(pane);
         AppStage.setPlayer(new PausablePlayer(song.getSong()));

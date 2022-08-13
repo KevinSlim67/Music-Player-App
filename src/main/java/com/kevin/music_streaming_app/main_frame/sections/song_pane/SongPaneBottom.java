@@ -43,7 +43,7 @@ public class SongPaneBottom extends BorderPane {
         centerPane.setPrefWidth(200);
         centerPane.setAlignment(Pos.CENTER);
 
-        PlayButton playBtn = new PlayButton();
+        PlayButton playBtn = new PlayButton(30);
 
         centerPane.getChildren().add(playBtn);
         this.setCenter(centerPane);
@@ -71,8 +71,7 @@ public class SongPaneBottom extends BorderPane {
         followedImgView.setFitWidth(20);
         followedImgView.setFitHeight(20);
 
-        FollowButton followBtn = new FollowButton(AppStage.getUser(),
-                User.searchUserByName(artist), 20);
+        FollowButton followBtn = new FollowButton(User.searchUserByName(artist).getId(), 20);
 
         HBox singerBox = new HBox(5);
         singerBox.setAlignment(Pos.CENTER_LEFT);

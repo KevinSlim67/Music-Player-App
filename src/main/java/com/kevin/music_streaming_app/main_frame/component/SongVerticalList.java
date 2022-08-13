@@ -11,7 +11,6 @@ public class SongVerticalList extends VBox {
         this.setSpacing(5);
 
         songs.forEach(s -> {
-            Song song = s;
             SongButtonV2 button = new SongButtonV2(s, width, height);
             this.getChildren().add(button);
         });

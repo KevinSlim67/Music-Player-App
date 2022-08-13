@@ -1,5 +1,6 @@
 package com.kevin.music_streaming_app.main_frame.component.buttons;
 
+import com.kevin.music_streaming_app.AppStage;
 import com.kevin.music_streaming_app.db.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -9,8 +10,11 @@ import javafx.scene.image.ImageView;
 public class FollowButton extends Button {
     private boolean isFollowed = false;
     private int size;
+    private int currentUserId = AppStage.getUser().getId();
+    private int followedUserId;
 
-    public FollowButton(User currentUser, User followedUser, int size) {
+    public FollowButton(int followedUserId, int size) {
+        this.followedUserId = followedUserId;
         this.size = size;
         Image likedImg = new Image("file:assets/icons/follow.png");
         ImageView likedImgView = new ImageView(likedImg);

@@ -70,6 +70,7 @@ public class NavBar extends BorderPane {
     private void logout() {
         PausablePlayer player = AppStage.getPlayer();
         if (player != null) player.stop();
+        AppStage.getThreads().clear();
         StageManager.getStage().close();
         StageManager.setStage(new LoginStage());
     }

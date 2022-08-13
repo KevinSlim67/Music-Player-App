@@ -5,6 +5,7 @@ import com.kevin.music_streaming_app.db.User;
 import com.kevin.music_streaming_app.main_frame.layout.Center;
 import com.kevin.music_streaming_app.main_frame.layout.NavBar;
 import com.kevin.music_streaming_app.main_frame.layout.SideBar;
+import com.kevin.music_streaming_app.main_frame.layout.SongBar;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -19,8 +20,11 @@ public class AppStage extends Stage {
     private static NavBar navBar;
     private static Center center;
     private static SideBar sideBar;
+    private static SongBar songBar;
 
     private static StackPane root;
+    private static BorderPane borderPane;
+
     private static Scene scene;
     private static List<Thread> threads = new ArrayList<>();
     private static PausablePlayer player;
@@ -37,7 +41,7 @@ public class AppStage extends Stage {
         center = new Center();
         sideBar = new SideBar();
 
-        BorderPane borderPane = new BorderPane();
+        borderPane = new BorderPane();
         borderPane.setStyle("-fx-background-color: transparent;");
         borderPane.setPrefWidth(this.getWidth());
         borderPane.setPrefHeight(this.getHeight());
@@ -96,5 +100,17 @@ public class AppStage extends Stage {
 
     public static void setCenter(Center center) {
         AppStage.center = center;
+    }
+
+    public static SongBar getSongBar() {
+        return songBar;
+    }
+
+    public static void setSongBar(SongBar songBar) {
+        AppStage.songBar = songBar;
+    }
+
+    public static BorderPane getBorderPane() {
+        return borderPane;
     }
 }

@@ -27,7 +27,7 @@ public class SongPane extends StackPane {
 
         songPaneCenter = new SongPaneCenter(song.getCover());
         songPaneBottom = new SongPaneBottom(song.getName(), song.getUser());
-        songPaneTop = new SongPaneTop();
+        songPaneTop = new SongPaneTop(song);
 
         borderPane.setCenter(songPaneCenter);
         borderPane.setBottom(songPaneBottom);

@@ -57,8 +57,7 @@ public class SongButtonV2 extends BorderPane {
         artistHBox.setAlignment(Pos.CENTER_LEFT);
         Label artistName = new Label(song.getUser());
         artistName.setStyle("-fx-font-size: 12px");
-        FollowButton followBtn = new FollowButton(AppStage.getUser(),
-                User.searchUserByName(song.getUser()), 15);
+        FollowButton followBtn = new FollowButton(User.searchUserByName(song.getUser()).getId(), 15);
         artistHBox.getChildren().addAll(followBtn, artistName);
 
         songInfoPane.getChildren().addAll(songHBox, artistHBox);
@@ -75,11 +74,6 @@ public class SongButtonV2 extends BorderPane {
         this.setLeft(coverView);
         this.setCenter(songInfoPane);
         this.setRight(rightPane);
-
     }
 
-    private void closeSong() {
-        PausablePlayer player = AppStage.getPlayer();
-        if (player != null) player.stop();
-    }
 }
