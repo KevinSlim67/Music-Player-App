@@ -267,6 +267,36 @@ public class Song {
         return songs;
     }
 
+    public static List<Song> returnAllThatUserContains(String word, int limit) {
+        List<Song> songs = new ArrayList<>();
+        int count = 0;
+
+        try {
+            String query = "SELECT song_name, genre, user_id, song_cover FROM Song JOIN User ON " +
+                    "User.id = Song.id " +
+                    "WHERE User.username LIKE ? ORDER BY release_date DESC";
+            PreparedStatement ps = DB.getConnection().prepareStatement(query);
+            ps.setString(1,"%" + word + "%");
+
+            ResultSet rs = ps.executeQuery();
+            int userId;
+            String songName, songGenre;
+            Blob songCover;
+
+            while (rs.next() && count++ < limit) {
+                songName = rs.getString("song_name");
+                songGenre = rs.getString("genre");
+                userId = rs.getInt("user_id");
+                songCover = rs.getBlob("song_cover");
+                songs.add(new Song(songName, userId, songCover, songGenre));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return songs;
+    }
+
     public static void pause() {
         AppStage.getPlayer().pause();
     }

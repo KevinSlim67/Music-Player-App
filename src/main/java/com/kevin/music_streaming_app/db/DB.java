@@ -1,7 +1,5 @@
 package com.kevin.music_streaming_app.db;
 
-import com.kevin.music_streaming_app.audio.AudioPlayer;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +11,7 @@ public class DB {
 
     public static void main() {
         connection = connectToDatabase();
+        User.updateProfilePicture("Kevin", "assets/index.jpg");
     }
 
     public static void insert(Connection c) throws SQLException, FileNotFoundException {

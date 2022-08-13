@@ -5,6 +5,7 @@ import com.kevin.music_streaming_app.LoginStage;
 import com.kevin.music_streaming_app.StageManager;
 import com.kevin.music_streaming_app.audio.PausablePlayer;
 import com.kevin.music_streaming_app.db.User;
+import com.kevin.music_streaming_app.features.ImageStyle;
 import com.kevin.music_streaming_app.main_frame.component.SearchBar;
 import com.kevin.music_streaming_app.main_frame.sections.HomePane;
 import com.kevin.music_streaming_app.main_frame.sections.LibraryPane;
@@ -20,6 +21,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+
+import java.sql.SQLException;
 
 public class NavBar extends BorderPane {
 
@@ -60,8 +63,21 @@ public class NavBar extends BorderPane {
             }
         });
 
+        Image profilePicture = new Image("file:assets/placeholder.jpg");
+        try {
+            if (user.getProfilePicture() != null)
+            profilePicture = new Image(user.getProfilePicture().getBinaryStream());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        rightPane.getChildren().addAll(refreshBtn, userName);
+        ImageView profileView = new ImageView(profilePicture);
+        profileView.setPreserveRatio(true);
+        profileView.setFitWidth(30);
+        profileView.setFitHeight(30);
+        ImageStyle.round(profileView, 5555);
+
+        rightPane.getChildren().addAll(refreshBtn, userName, profileView);
 
         this.setLeft(searchBar);
         this.setRight(rightPane);
