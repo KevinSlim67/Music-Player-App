@@ -12,13 +12,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Register extends VBox {
-    TextField username = new TextField();;
+    TextField username = new TextField();
+    ;
     PasswordField password = new PasswordField();
-    Label errorLabel = new Label("Username already taken!");
+    PasswordField passwordConfirmation = new PasswordField();
+    Label errorLabel = new Label();
     Label successLabel = new Label("Account successfully created!");
 
     public Register() {
@@ -27,6 +27,7 @@ public class Register extends VBox {
 
         username.setPromptText("Username");
         password.setPromptText("Password");
+        passwordConfirmation.setPromptText("Confirm Password");
 
         errorLabel.setStyle("-fx-text-fill: red");
         Visibility.hide(errorLabel);
@@ -54,18 +55,25 @@ public class Register extends VBox {
         login.getStyleClass().add("switch");
         group.getChildren().addAll(login, errorLabel, successLabel, register);
 
-        this.getChildren().addAll(username, password, group);
+        this.getChildren().addAll(username, password, passwordConfirmation, group);
     }
 
     public void registerClick() {
         String username = this.username.getText();
         String password = this.password.getText();
+        String passwordConfirmation = this.passwordConfirmation.getText();
 
-        User user = new User(username, password);
-        if (!user.insert()) {
-            Visibility.showTemporarly(errorLabel, 3000);
+        if (password.equals(passwordConfirmation)) {
+            User user = new User(username, password);
+            if (!user.insert()) {
+                errorLabel.setText("Username already taken!");
+                Visibility.showTemporarly(errorLabel, 3000);
+            } else {
+                Visibility.show(successLabel);
+            }
         } else {
-            Visibility.show(successLabel);
+            errorLabel.setText("The passwords do not match!");
+            Visibility.showTemporarly(errorLabel, 3000);
         }
     }
 }

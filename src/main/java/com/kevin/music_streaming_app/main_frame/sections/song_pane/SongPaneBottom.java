@@ -90,11 +90,6 @@ public class SongPaneBottom extends BorderPane {
         rightPane.setPrefWidth(200);
         rightPane.setMaxWidth(200);
         rightPane.setAlignment(Pos.CENTER_RIGHT);
-
-        SoundSlider soundSlider = new SoundSlider();
-
-        rightPane.getChildren().addAll(soundSlider);
-
         this.setRight(rightPane);
     }
 

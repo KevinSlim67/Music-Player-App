@@ -15,7 +15,7 @@ public class SongPane extends StackPane {
         this.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3)");
 
         pane = new StackPane();
-        pane.setStyle("-fx-background-color: #0d0e1eF3; -fx-border-color: #535353; " +
+        pane.setStyle("-fx-background-color: #0d0e1eFA; -fx-border-color: #535353; " +
                 "-fx-border-radius: 30px; -fx-background-radius: 30px");
         pane.setPadding(new Insets(10));
         pane.setPrefWidth(600);

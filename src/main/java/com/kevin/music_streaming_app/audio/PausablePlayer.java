@@ -1,7 +1,6 @@
 package com.kevin.music_streaming_app.audio;
 
 import com.kevin.music_streaming_app.AppStage;
-import com.kevin.music_streaming_app.db.RecentlyListened;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
@@ -27,6 +26,7 @@ public class PausablePlayer {
 
     // status variable what player thread is doing/supposed to do
     private int playerStatus = NOTSTARTED;
+
 
     public PausablePlayer(final Blob song) {
         AppStage.getThreads().forEach(t -> t.stop());
