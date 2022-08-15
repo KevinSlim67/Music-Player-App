@@ -2,7 +2,6 @@ package com.kevin.music_streaming_app;
 
 import com.kevin.music_streaming_app.db.DB;
 import javafx.application.Application;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class StageManager extends Application {

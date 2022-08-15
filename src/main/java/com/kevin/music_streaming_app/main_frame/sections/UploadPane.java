@@ -98,7 +98,7 @@ public class UploadPane extends VBox {
         imagePane = new StackPane();
         imagePane.setPrefWidth(100);
         imagePane.setPrefHeight(100);
-        imagePane.setStyle("-fx-border-color: white; -fx-border-width: 2;");
+        imagePane.setStyle("-fx-background-color: #0e1030");
 
         Button chooseImage = new Button("Choose Image");
         chooseImage.setOnAction(e -> selectImage());
